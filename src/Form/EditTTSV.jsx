@@ -10,17 +10,16 @@ const EditTTSV = () => {
   const [loading, setLoading] = useState(true);
   const [studentData, setStudentData] = useState(null);
 
-  // Lấy thông tin sinh viên từ Local Storage khi vào trang
   useEffect(() => {
     const students = JSON.parse(localStorage.getItem('students')) || [];
     const student = students.find((item) => item.maSv === maSv);
 
     if (student) {
-      setStudentData(student); // Lưu thông tin sinh viên vào state
+      setStudentData(student); 
       setLoading(false);
     } else {
       alert(`Không tìm thấy sinh viên có mã ${maSv}!`);
-      navigate('/'); // Điều hướng về trang chính nếu không tìm thấy sinh viên
+      navigate('/'); 
     }
   }, [maSv, navigate]);
 
@@ -32,7 +31,7 @@ const EditTTSV = () => {
       soDienThoai: '',
       email: '',
     },
-    enableReinitialize: true, // Đồng bộ dữ liệu khi initialValues thay đổi
+    enableReinitialize: true, 
     validationSchema: Yup.object({
       maSv: Yup.string().required('Mã sinh viên không được để trống'),
       hoTen: Yup.string().required('Họ tên không được để trống'),
@@ -48,7 +47,7 @@ const EditTTSV = () => {
       const index = students.findIndex((student) => student.maSv === maSv);
   
       if (index !== -1) {
-        students[index] = values; // Cập nhật thông tin sinh viên
+        students[index] = values; 
         localStorage.setItem('students', JSON.stringify(students));
         alert('Cập nhật thành công!');
         navigate('/add-ttsv');
