@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Table } from 'antd';
@@ -7,9 +7,19 @@ import { NavLink } from 'react-router-dom';
 const AddTTSV = () => {
   const [arrProduct, setArrProduct] = useState([]);
 
+  useEffect(() => {
+    const students = JSON.parse(localStorage.getItem('students')) || [];
+    setArrProduct(students);
+  }, []);
+
+  const updateLocalStorage = (data) => {
+    localStorage.setItem('students', JSON.stringify(data));
+  };
+
   const handleDelete = (maSv) => {
     const updatedList = arrProduct.filter((item) => item.maSv !== maSv);
     setArrProduct(updatedList);
+    updateLocalStorage(updatedList);
   };
 
   const dataColumn = [
@@ -74,8 +84,11 @@ const AddTTSV = () => {
         .email('Email chưa đúng định dạng'),
     }),
     onSubmit: (values, { resetForm }) => {
-      setArrProduct([...arrProduct, { ...values, key: values.maSv }]);
-      resetForm(); 
+      const updatedList = [...arrProduct, { ...values, key: values.maSv }];
+      setArrProduct(updatedList);
+      updateLocalStorage(updatedList);
+      resetForm();
+      alert('Thêm sinh viên thành công!');
     },
   });
 
